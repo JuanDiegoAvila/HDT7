@@ -224,6 +224,7 @@ public class BinaryTree <E>{
         return s.toString();
     }
 
+    public InOrder<E> iterator(){ return new InOrder<E>(this); }
 
 
 }

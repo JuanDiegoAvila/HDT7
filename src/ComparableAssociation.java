@@ -62,7 +62,7 @@ public class ComparableAssociation <K extends Comparable<K>, V>
     public String toString()
     {
         StringBuffer s = new StringBuffer();
-        s.append("<ComparableAssociation: "+getKey()+"="+getValue()+">");
+        s.append(""+getKey()+"="+getValue()+">");
         return s.toString();
     }
 }

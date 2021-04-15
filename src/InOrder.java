@@ -1,9 +1,19 @@
 import java.util.Stack;
+import java.util.Iterator;
 
-public class InOrderTraversal<E> {
+/**
+ *@author 2001 duane a. bailey
+ *@author Juan Diego Avila Sagastume
+ */
+public class InOrder<E> implements Iterator<E>{
     protected BinaryTree<E> root;
     protected Stack<BinaryTree<E>> todo;
 
+    public InOrder(BinaryTree<E> root){
+        todo = new Stack<BinaryTree<E>>();
+        this.root = root;
+        reset();
+    }
     // post: resets the iterator to retraverse
     public void reset()
     {
@@ -31,5 +41,12 @@ public class InOrderTraversal<E> {
         }
         return result;
     }
+
+    public E get(){return todo.peek().value();}
+
+    @Override
+    public boolean hasNext(){return !todo.isEmpty();}
+
+
 
 }

@@ -232,15 +232,13 @@ public class BinarySearchTree<E extends Comparable<E>>{
 
 
     /**
-     * @post Returns iterator to traverse BST
-     * @return An iterator over binary search tree
+     * @return Un iterador en InOrder.
      */
-    /*
-    public Iterator<E> iterator()
+    public InOrder<E> iterator()
     {
-        return root.InOrderTransversal();
+        return root.iterator();
     }
-    */
+
 
 
     /**
@@ -257,7 +255,7 @@ public class BinarySearchTree<E extends Comparable<E>>{
     public String toString()
     {
         StringBuffer s = new StringBuffer();
-        s.append("<BinarySearchTree:");
+        s.append("<");
         if (!root.isEmpty()) {
             s.append(root);
         }
