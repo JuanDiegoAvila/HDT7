@@ -22,6 +22,7 @@ public class Main {
         BinarySearchTree<ComparableAssociation<String, List<String>>> Frances = new BinarySearchTree<ComparableAssociation<String, List<String>>>();
         BinarySearchTree<ComparableAssociation<String, List<String>>> Espanol = new BinarySearchTree<ComparableAssociation<String, List<String>>>();
 
+        //Por cada palabra dentro de la oracion crea una comparable association.
         for(List<String> l : palabras){
             ArrayList<String> valoresIn = new ArrayList<String>(Arrays.asList(l.get(1),l.get(2)));
             ComparableAssociation<String, List<String>> ing = new ComparableAssociation<>(l.get(0), valoresIn);
@@ -32,11 +33,13 @@ public class Main {
             ArrayList<String> valoresEs = new ArrayList<String>(Arrays.asList(l.get(0),l.get(2)));
             ComparableAssociation<String, List<String>> es = new ComparableAssociation<>(l.get(1), valoresEs);
 
+            //Se agrega el valor a su respectivo diccionario.
             Ingles.add(ing);
             Frances.add(fr);
             Espanol.add(es);
         }
 
+        //Se recorre cada diccionario y lo guarda en In Order.
         ArrayList< ComparableAssociation<String, List<String>>> InglesInOrder = new ArrayList<>();
         InOrder<ComparableAssociation<String, List<String>>> iteratorI = Ingles.iterator();
         for(int i = 0; i<Ingles.size(); i++){
@@ -47,6 +50,7 @@ public class Main {
         System.out.println("\n Palabras ordenadas en ingles : ");
         System.out.println("\t"+InglesInOrder.toString());
 
+        //Se recorre cada diccionario y lo guarda en In Order.
         ArrayList< ComparableAssociation<String, List<String>>> FrancesInOrder = new ArrayList<>();
         InOrder<ComparableAssociation<String, List<String>>> iteratorF = Frances.iterator();
         for(int i = 0; i<Frances.size(); i++){
@@ -58,6 +62,7 @@ public class Main {
         System.out.println("\n Palabras ordenadas en frances : ");
         System.out.println("\t"+FrancesInOrder.toString());
 
+        //Se recorre cada diccionario y lo guarda en In Order.
         ArrayList< ComparableAssociation<String, List<String>>> EspanolInOrder = new ArrayList<>();
         InOrder<ComparableAssociation<String, List<String>>> iteratorE = Espanol.iterator();
         for(int i = 0; i<Espanol.size(); i++){
@@ -107,7 +112,8 @@ public class Main {
 
                             for (String[] oracion : oraciones) {
 
-
+                                //Por cada oracion en la lista oraciones realizara la traduccion.
+                                //Se recibe el idioma de origen y el idioma a traducir.
 
                                 System.out.println("\n Oracion a traducir :");
                                 String original = String.join(" ",oracion);
@@ -173,11 +179,13 @@ public class Main {
                                             for (int i = 0; i < InglesInOrder.size(); i++) {
                                                 if ("frances".equals(destino)) {
                                                     if (Frances.get(FrancesInOrder.get(i)).getValue().get(0).equals(p)) {
+                                                        //la palabra se encuentra en el diccionario.
                                                         traducido.append(Frances.get(FrancesInOrder.get(i)).getKey()).append(" ");
                                                         existe = true;
                                                     }
                                                 } else if ("español".equals(destino)) {
                                                     if (Espanol.get(EspanolInOrder.get(i)).getValue().get(0).equals(p)) {
+                                                        //la palabra se encuentra en el diccionario.
                                                         traducido.append(Espanol.get(EspanolInOrder.get(i)).getKey()).append(" ");
                                                         existe = true;
                                                     }
@@ -202,11 +210,13 @@ public class Main {
                                             for (int i = 0; i < EspanolInOrder.size(); i++) {
                                                 if ("frances".equals(destino)) {
                                                     if (Frances.get(FrancesInOrder.get(i)).getValue().get(1).equals(p)) {
+                                                        //la palabra se encuentra en el diccionario.
                                                         traducido.append(Frances.get(FrancesInOrder.get(i)).getKey()).append(" ");
                                                         existe = true;
                                                     }
                                                 } else if ("ingles".equals(destino)) {
                                                     if (Ingles.get(InglesInOrder.get(i)).getValue().get(0).equals(p)) {
+                                                        //la palabra se encuentra en el diccionario.
                                                         traducido.append(Ingles.get(InglesInOrder.get(i)).getKey()).append(" ");
                                                         existe = true;
                                                     }
@@ -231,11 +241,13 @@ public class Main {
                                             for (int i = 0; i < FrancesInOrder.size(); i++) {
                                                 if ("español".equals(destino)) {
                                                     if (Espanol.get(EspanolInOrder.get(i)).getValue().get(1).equals(p)) {
+                                                        //la palabra se encuentra en el diccionario.
                                                         traducido.append(Espanol.get(EspanolInOrder.get(i)).getKey()).append(" ");
                                                         existe = true;
                                                     }
                                                 } else if ("ingles".equals(destino)) {
                                                     if (Ingles.get(InglesInOrder.get(i)).getValue().get(1).equals(p)) {
+                                                        //la palabra se encuentra en el diccionario.
                                                         traducido.append(Ingles.get(InglesInOrder.get(i)).getKey()).append(" ");
                                                         existe = true;
                                                     }
