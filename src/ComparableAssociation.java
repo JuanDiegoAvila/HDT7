@@ -65,4 +65,5 @@ public class ComparableAssociation <K extends Comparable<K>, V>
         s.append(""+getKey()+"="+getValue()+">");
         return s.toString();
     }
+
 }

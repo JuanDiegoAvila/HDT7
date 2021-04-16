@@ -1,5 +1,7 @@
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * @author Juan Diego Avila Sagastume
  */
@@ -74,7 +76,7 @@ public class Main {
         Outerloop:
         while(true){
             System.out.println("\n Bienvenido al menu principal, elija la opcion que desea realizar : ");
-            System.out.println("\t [ 1 ] Ingresar oración para traducir.");
+            System.out.println("\t [ 1 ] Traducir un texto.");
             System.out.println("\t [ 2 ] Salir.");
 
             Scanner scan = new Scanner(System.in);
@@ -84,10 +86,186 @@ public class Main {
                 opcion = scan.nextInt();
 
                 if(opcion<3 && opcion>0) {
+                    scan.nextLine();
                     switch(opcion){
                         case 1 -> {
-                            System.out.print("\n\t Ingrese la oracion que desea traducir.");
-                            String oracion = scan.next();
+                            System.out.print("\n\t Ingrese el path del texto -> ");
+                            String path = scan.nextLine();
+                            ArrayList<String[]> oraciones = new ArrayList<>();
+                            ArrayList<String> traducidos = new ArrayList<>();
+
+                            try {
+                                Scanner input = new Scanner(new File(path));
+                                int cont = 0;
+                                while (input.hasNextLine()) {
+                                    oraciones.add(input.nextLine().split(" "));
+                                }
+                            } catch (Exception ignored) {
+                            }
+
+                            System.out.println("El archivo se leyó correctamente...");
+
+                            for (String[] oracion : oraciones) {
+
+
+
+                                System.out.println("\n Oracion a traducir :");
+                                String original = String.join(" ",oracion);
+                                System.out.println("\t "+ original);
+
+                                System.out.print("\n\t Ingrese el idioma de origen [ingles,español,frances] -> ");
+
+                                String origen = scan.nextLine();
+                                origen = origen.toLowerCase(Locale.ROOT);
+
+                                String destino = "";
+
+                                LanguageLoop:
+                                while (true) {
+                                    switch (origen) {
+                                        case "español" -> {
+                                            System.out.print("\n\t Ingrese el idioma de destino [ingles,frances] -> ");
+                                            destino = scan.nextLine();
+                                            destino = destino.toLowerCase(Locale.ROOT);
+                                            if (destino.equals("ingles") || destino.equals("frances")) {
+                                                break LanguageLoop;
+                                            } else {
+                                                System.out.println("\nIngrese un idioma permitido ! ! !");
+                                            }
+                                        }
+                                        case "ingles" -> {
+                                            System.out.print("\n\t Ingrese el idioma de destino [español,frances] -> ");
+                                            destino = scan.nextLine();
+                                            destino = destino.toLowerCase(Locale.ROOT);
+                                            if (destino.equals("español") || destino.equals("frances")) {
+                                                break LanguageLoop;
+                                            } else {
+                                                System.out.println("\nIngrese un idioma permitido ! ! !");
+                                            }
+                                        }
+                                        case "frances" -> {
+                                            System.out.print("\n\t Ingrese el idioma de destino [ingles,español] -> ");
+                                            destino = scan.nextLine();
+                                            destino = destino.toLowerCase(Locale.ROOT);
+                                            if (destino.equals("ingles") || destino.equals("español")) {
+                                                break LanguageLoop;
+                                            } else {
+                                                System.out.println("\nIngrese un idioma permitido ! ! !");
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                //Al tener el lenguaje de destino y de origen, inicia la traduccion.
+
+                                StringBuilder traducido = new StringBuilder();
+
+                                switch (origen) {
+                                    case "ingles" -> {
+
+                                        for (String p : oracion) {
+                                            //recorrer cada palabra
+                                            p = p.toLowerCase(Locale.ROOT);
+                                            p = p.replaceAll(" ","");
+
+                                            Boolean existe = false;
+                                            for (int i = 0; i < InglesInOrder.size(); i++) {
+                                                if ("frances".equals(destino)) {
+                                                    if (Frances.get(FrancesInOrder.get(i)).getValue().get(0).equals(p)) {
+                                                        traducido.append(Frances.get(FrancesInOrder.get(i)).getKey()).append(" ");
+                                                        existe = true;
+                                                    }
+                                                } else if ("español".equals(destino)) {
+                                                    if (Espanol.get(EspanolInOrder.get(i)).getValue().get(0).equals(p)) {
+                                                        traducido.append(Espanol.get(EspanolInOrder.get(i)).getKey()).append(" ");
+                                                        existe = true;
+                                                    }
+
+                                                }
+                                            }
+
+                                            if (!existe) {
+                                                traducido.append("*").append(p).append("*").append(" ");
+                                            }
+                                        }
+                                        traducidos.add(traducido.toString());
+
+                                    }
+                                    case "español" -> {
+
+                                        for (String p : oracion) {
+                                            //recorrer cada palabra
+                                            p = p.toLowerCase(Locale.ROOT);
+
+                                            Boolean existe = false;
+                                            for (int i = 0; i < EspanolInOrder.size(); i++) {
+                                                if ("frances".equals(destino)) {
+                                                    if (Frances.get(FrancesInOrder.get(i)).getValue().get(1).equals(p)) {
+                                                        traducido.append(Frances.get(FrancesInOrder.get(i)).getKey()).append(" ");
+                                                        existe = true;
+                                                    }
+                                                } else if ("ingles".equals(destino)) {
+                                                    if (Ingles.get(InglesInOrder.get(i)).getValue().get(0).equals(p)) {
+                                                        traducido.append(Ingles.get(InglesInOrder.get(i)).getKey()).append(" ");
+                                                        existe = true;
+                                                    }
+
+                                                }
+
+                                            }
+
+                                            if (!existe) {
+                                                traducido.append("*").append(p).append("*").append(" ");
+                                            }
+                                        }
+                                        traducidos.add(traducido.toString());
+
+                                    }
+                                    case "frances" -> {
+
+                                        for (String p : oracion) {
+                                            //recorrer cada palabra
+                                            p = p.toLowerCase(Locale.ROOT);
+                                            Boolean existe = false;
+                                            for (int i = 0; i < FrancesInOrder.size(); i++) {
+                                                if ("español".equals(destino)) {
+                                                    if (Espanol.get(EspanolInOrder.get(i)).getValue().get(1).equals(p)) {
+                                                        traducido.append(Espanol.get(EspanolInOrder.get(i)).getKey()).append(" ");
+                                                        existe = true;
+                                                    }
+                                                } else if ("ingles".equals(destino)) {
+                                                    if (Ingles.get(InglesInOrder.get(i)).getValue().get(1).equals(p)) {
+                                                        traducido.append(Ingles.get(InglesInOrder.get(i)).getKey()).append(" ");
+                                                        existe = true;
+                                                    }
+
+                                                }
+
+                                            }
+
+                                            if (!existe) {
+                                                traducido.append("*").append(p).append("*").append(" ");
+                                            }
+                                        }
+                                        traducidos.add(traducido.toString());
+
+                                    }
+                                }
+
+
+                                System.out.println("\n Oracion traducida :");
+                                System.out.println("\t "+traducidos.get(oraciones.indexOf(oracion)));
+                                System.out.println("\n -----------------------------------------------------------------------");
+                            }
+
+
+
+
+                            for(int i = 0; i<traducidos.size();i++){
+
+
+                            }
 
                         }
                         case 2 -> { break Outerloop; }
